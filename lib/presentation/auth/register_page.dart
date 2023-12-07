@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_fic9_ecommerce/data/models/request/register_request.dart';
+import 'package:flutter_fic9_ecommerce/presentation/auth/bloc/register/register_bloc.dart';
 
 import '../../common/components/button.dart';
 import '../../common/components/custom_text_field.dart';
@@ -27,9 +30,10 @@ class _RegisterPageState extends State<RegisterPage> {
     confirmPasswordController.dispose();
     super.dispose();
   }
+
   @override
   Widget build(BuildContext context) {
-     return Scaffold(
+    return Scaffold(
       body: ListView(
         padding: const EdgeInsets.all(16.0),
         children: [
@@ -88,7 +92,13 @@ class _RegisterPageState extends State<RegisterPage> {
           const SpaceHeight(24.0),
           Button.filled(
             onPressed: () {
-              Navigator.pop(context);
+              final data = RegisterRequestModel(
+                name: nameController.text,
+                password: passwordController.text,
+                email: emailController.text,
+                username: nameController.text.replaceAll(' ', ''),
+              );
+              context.read<RegisterBloc>().add(RegisterEvent.register(data));
             },
             label: 'Daftar',
           ),
